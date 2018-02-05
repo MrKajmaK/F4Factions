@@ -1,0 +1,5 @@
+name: F4Factions
+version: ${project.version}
+main: me.f4dev.f4factions.F4factions
+authors: [F4Developer]
+description: Factions plugin
