@@ -59,11 +59,20 @@ public final class F4factions extends JavaPlugin {
 
                         Bukkit.getServer().getPluginManager().disablePlugin(plugin);
                     }
-                } catch (SQLException | ClassNotFoundException e) {
+                } catch (SQLException e) {
+                    getLogger().info("An error with database ocurred.");
+                    getLogger().info("Disabling plugin.");
 
+                    Bukkit.getServer().getPluginManager().disablePlugin(plugin);
+                } catch (ClassNotFoundException e) {
+                    getLogger().info("No MySQL driver.");
+                    getLogger().info("Disabling plugin.");
+
+                    Bukkit.getServer().getPluginManager().disablePlugin(plugin);
                 }
             }
         };
+        runnable.runTaskAsynchronously(plugin);
     }
 
     @Override
