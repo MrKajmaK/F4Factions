@@ -43,6 +43,8 @@ public final class F4factions extends JavaPlugin {
                     if(openConnection() && !connection.isClosed()) {
                         getLogger().info("Successfully connected to database.");
 
+                        statement = connection.createStatement();
+
                         DatabaseMetaData metaData = connection.getMetaData();
 
                         // Check if "factions" table exists
@@ -50,8 +52,44 @@ public final class F4factions extends JavaPlugin {
 
                         if(!factionsTable.next()) {
                             // Create table if don't exists
-                            statement.executeUpdate("CREATE TABLE factions (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, tag VARCHAR(12) NOT NULL UNIQUE, leader VARCHAR(25) NOT NULL UNIQUE, allies JSON NOT NULL, enemies JSON NOT NULL)");
+                            statement.executeUpdate("CREATE TABLE factions (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, tag VARCHAR(12) NOT NULL UNIQUE, leader INT NOT NULL UNIQUE)");
                             getLogger().info("Created table 'factions'");
+                        }
+
+                        // Check if "allies" table exists
+                        ResultSet alliesTable = metaData.getTables(null, null, "allies", null);
+
+                        if(!alliesTable.next()) {
+                            // Create table if don't exists
+                            statement.executeUpdate("CREATE TABLE allies (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, faction1 INT NOT NULL, faction2 INT NOT NULL)");
+                            getLogger().info("Created table 'allies'");
+                        }
+
+                        // Check if "enemies" table exists
+                        ResultSet enemiesTable = metaData.getTables(null, null, "enemies", null);
+
+                        if(!enemiesTable.next()) {
+                            // Create table if don't exists
+                            statement.executeUpdate("CREATE TABLE enemies (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, faction1 INT NOT NULL, faction2 INT NOT NULL)");
+                            getLogger().info("Created table 'enemies'");
+                        }
+
+                        // Check if "players" table exists
+                        ResultSet playersTable = metaData.getTables(null, null, "players", null);
+
+                        if(!playersTable.next()) {
+                            // Create table if don't exists
+                            statement.executeUpdate("CREATE TABLE players (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, nickname VARCHAR(25) NOT NULL UNIQUE, faction INT DEFAULT NULL, rank VARCHAR(12) DEFAULT NULL)");
+                            getLogger().info("Created table 'players'");
+                        }
+
+                        // Check if "invitations" table exists
+                        ResultSet invitationsTable = metaData.getTables(null, null, "invitations", null);
+
+                        if(!invitationsTable.next()) {
+                            // Create table if don't exists
+                            statement.executeUpdate("CREATE TABLE invitations (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, player INT NOT NULL, faction INT DEFAULT NULL)");
+                            getLogger().info("Created table 'invitations'");
                         }
                     } else {
                         getLogger().info("Bad connection to database.");
@@ -60,12 +98,12 @@ public final class F4factions extends JavaPlugin {
                         Bukkit.getServer().getPluginManager().disablePlugin(plugin);
                     }
                 } catch (SQLException e) {
-                    getLogger().info("An error with database ocurred.");
+                    getLogger().warning("An error with database occurred.");
                     getLogger().info("Disabling plugin.");
 
                     Bukkit.getServer().getPluginManager().disablePlugin(plugin);
                 } catch (ClassNotFoundException e) {
-                    getLogger().info("No MySQL driver.");
+                    getLogger().warning("No MySQL driver.");
                     getLogger().info("Disabling plugin.");
 
                     Bukkit.getServer().getPluginManager().disablePlugin(plugin);
