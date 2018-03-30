@@ -82,15 +82,6 @@ public final class F4factions extends JavaPlugin {
                             statement.executeUpdate("CREATE TABLE players (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, nickname VARCHAR(25) NOT NULL UNIQUE, faction INT DEFAULT NULL, rank VARCHAR(12) DEFAULT NULL)");
                             getLogger().info("Created table 'players'");
                         }
-
-                        // Check if "invitations" table exists
-                        ResultSet invitationsTable = metaData.getTables(null, null, "invitations", null);
-
-                        if(!invitationsTable.next()) {
-                            // Create table if don't exists
-                            statement.executeUpdate("CREATE TABLE invitations (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, player INT NOT NULL, faction INT DEFAULT NULL)");
-                            getLogger().info("Created table 'invitations'");
-                        }
                     } else {
                         getLogger().info("Bad connection to database.");
                         getLogger().info("Disabling plugin.");

@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class PlayersManager {
     private F4factions plugin;
 
-    private HashMap<Integer, Player> players = new HashMap<>();
+    private HashMap<Integer, FactionsPlayer> players = new HashMap<>();
     private HashMap<String, Integer> playersByNick = new HashMap<>();
 
     public PlayersManager(F4factions plugin) throws SQLException {
@@ -23,27 +23,27 @@ public class PlayersManager {
             int faction = playersSet.getInt("faction");
             String rank = playersSet.getString("rank");
 
-            Player player = new Player(id, nickname, faction, rank);
+            FactionsPlayer factionsPlayer = new FactionsPlayer(id, nickname, faction, rank);
 
-            players.put(id, player);
+            players.put(id, factionsPlayer);
             playersByNick.put(nickname, id);
         }
     }
 
-    public Player getPlayer(int id) {
+    public FactionsPlayer getPlayer(int id) {
         return players.get(id);
     }
 
-    public Player getPlayer(String nickname) {
+    public FactionsPlayer getPlayer(String nickname) {
         return players.get(playersByNick.get(nickname));
     }
 
-    public boolean addPlayer(Player player) {
-        int id = player.getId();
-        String nickname = player.getNickname();
+    public boolean addPlayer(FactionsPlayer factionsPlayer) {
+        int id = factionsPlayer.getId();
+        String nickname = factionsPlayer.getNickname();
 
         if(!players.containsKey(id)) {
-            players.put(id, player);
+            players.put(id, factionsPlayer);
             playersByNick.put(nickname, id);
 
             return true;
@@ -52,9 +52,9 @@ public class PlayersManager {
         }
     }
 
-    public boolean updatePlayer(int id, Player player) {
+    public boolean updatePlayer(int id, FactionsPlayer factionsPlayer) {
         if(players.containsKey(id)) {
-            players.replace(id, player);
+            players.replace(id, factionsPlayer);
 
             return true;
         } else {
@@ -62,9 +62,9 @@ public class PlayersManager {
         }
     }
 
-    public boolean updatePlayer(String nickname, Player player) {
+    public boolean updatePlayer(String nickname, FactionsPlayer factionsPlayer) {
         if(playersByNick.containsKey(nickname)) {
-            players.replace(playersByNick.get(nickname), player);
+            players.replace(playersByNick.get(nickname), factionsPlayer);
 
             return true;
         } else {

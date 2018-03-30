@@ -1,10 +1,10 @@
 package me.f4dev.f4factions.players;
 
-public class Player {
+public class FactionsPlayer {
     private int id, faction;
     private String nickname, rank;
 
-    public Player(int id, String nickname, int faction, String rank) {
+    public FactionsPlayer(int id, String nickname, int faction, String rank) {
         this.id = id;
         this.nickname = nickname;
         this.faction = faction;
