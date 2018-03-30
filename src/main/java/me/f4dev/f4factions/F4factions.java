@@ -88,12 +88,12 @@ public final class F4factions extends JavaPlugin {
 
                         Bukkit.getServer().getPluginManager().disablePlugin(plugin);
                     }
-                } catch (SQLException e) {
+                } catch(SQLException e) {
                     getLogger().warning("An error with database occurred.");
                     getLogger().info("Disabling plugin.");
 
                     Bukkit.getServer().getPluginManager().disablePlugin(plugin);
-                } catch (ClassNotFoundException e) {
+                } catch(ClassNotFoundException e) {
                     getLogger().warning("No MySQL driver.");
                     getLogger().info("Disabling plugin.");
 
@@ -114,7 +114,7 @@ public final class F4factions extends JavaPlugin {
             return false;
         }
 
-        synchronized (this) {
+        synchronized(this) {
             if(connection != null && !connection.isClosed()) {
                 return false;
             }
