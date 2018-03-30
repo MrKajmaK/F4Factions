@@ -1,5 +1,6 @@
 package me.f4dev.f4factions;
 
+import me.f4dev.f4factions.commands.FactionsCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,6 +19,9 @@ public final class F4factions extends JavaPlugin {
     public Statement statement;
     private String host, database, username, password;
     private int port;
+
+    // Commands
+    FactionsCommand factionsCommand;
 
     @Override
     public void onEnable() {
@@ -102,6 +106,8 @@ public final class F4factions extends JavaPlugin {
             }
         };
         runnable.runTaskAsynchronously(plugin);
+
+        factionsCommand = new FactionsCommand(this);
     }
 
     @Override

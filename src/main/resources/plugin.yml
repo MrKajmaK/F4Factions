@@ -2,4 +2,12 @@ name: F4Factions
 version: ${project.version}
 main: me.f4dev.f4factions.F4factions
 authors: [F4Developer]
-description: Factions plugin
+description: Factions plugin with MySQL integration
+commands:
+  factions:
+    description: Main command of plugin
+    aliases: [f, f4factions, faction]
+permissions:
+  f4.factions.command.*:
+    description: Full access to command and subcommands
+    default: op
