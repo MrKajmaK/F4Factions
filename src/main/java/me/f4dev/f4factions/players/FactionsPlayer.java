@@ -1,14 +1,25 @@
 package me.f4dev.f4factions.players;
 
+import me.f4dev.f4factions.factions.Faction;
+import me.f4dev.f4factions.factions.FactionRoles;
+
 public class FactionsPlayer {
     private int id, faction;
-    private String nickname, rank;
+    private String nickname;
+    private FactionRoles role;
 
-    public FactionsPlayer(int id, String nickname, int faction, String rank) {
+    public FactionsPlayer(int id, String nickname, int faction, FactionRoles role) {
         this.id = id;
         this.nickname = nickname;
         this.faction = faction;
-        this.rank = rank;
+        this.role = role;
+    }
+
+    public FactionsPlayer(int id, String nickname) {
+        this.id = id;
+        this.nickname = nickname;
+        this.faction = 0;
+        this.role = null;
     }
 
     public int getId() {
@@ -27,11 +38,15 @@ public class FactionsPlayer {
         this.faction = faction;
     }
 
-    public String getRank() {
-        return rank;
+    public void setFaction(Faction faction) {
+        setFaction(faction.getId());
     }
 
-    public void setRank(String rank) {
-        this.rank = rank;
+    public FactionRoles getRole() {
+        return role;
+    }
+
+    public void setRole(FactionRoles role) {
+        this.role = role;
     }
 }

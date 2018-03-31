@@ -2,8 +2,10 @@ package me.f4dev.f4factions.factions;
 
 import me.f4dev.f4factions.F4factions;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 
 public class FactionsManager {
@@ -35,6 +37,28 @@ public class FactionsManager {
 
     public Faction getFaction(String tag) {
         return factions.get(factionsByTag.get(tag));
+    }
+
+    public Faction createFaction(String tag, String leader) throws SQLException {
+        int id = -1;
+        String sql = "INSERT INTO factions (tag, leader) VALUES (?, ?)";
+        PreparedStatement preparedStatement = plugin.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        preparedStatement.setString(1, tag);
+        preparedStatement.setString(2, leader);
+        preparedStatement.executeUpdate();
+
+        ResultSet resultSet = preparedStatement.getGeneratedKeys();
+        if(resultSet.next()) {
+            id = resultSet.getInt(1);
+        }
+
+        if(id != -1) {
+            Faction faction = new Faction(id, tag, leader);
+            addFaction(faction);
+            return faction;
+        } else {
+            return null;
+        }
     }
 
     public boolean addFaction(Faction faction) {

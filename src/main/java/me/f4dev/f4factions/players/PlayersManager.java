@@ -1,6 +1,8 @@
 package me.f4dev.f4factions.players;
 
 import me.f4dev.f4factions.F4factions;
+import me.f4dev.f4factions.factions.Faction;
+import me.f4dev.f4factions.factions.FactionRoles;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,9 +23,15 @@ public class PlayersManager {
             int id = playersSet.getInt("id");
             String nickname = playersSet.getString("nickname");
             int faction = playersSet.getInt("faction");
-            String rank = playersSet.getString("rank");
+            int roleInt = playersSet.getInt("role");
+            FactionRoles role = FactionRoles.valueOf(roleInt);
+            FactionsPlayer factionsPlayer;
 
-            FactionsPlayer factionsPlayer = new FactionsPlayer(id, nickname, faction, rank);
+            if(role != null) {
+                factionsPlayer = new FactionsPlayer(id, nickname, faction, role);
+            } else {
+                factionsPlayer = new FactionsPlayer(id, nickname, 0, null);
+            }
 
             players.put(id, factionsPlayer);
             playersByNick.put(nickname, id);

@@ -1,6 +1,8 @@
 package me.f4dev.f4factions;
 
 import me.f4dev.f4factions.commands.FactionsCommand;
+import me.f4dev.f4factions.factions.FactionsManager;
+import me.f4dev.f4factions.players.PlayersManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,10 +17,14 @@ public final class F4factions extends JavaPlugin {
     public FileConfiguration config;
 
     // MySQL variables
-    Connection connection;
+    public Connection connection;
     public Statement statement;
     private String host, database, username, password;
     private int port;
+
+    // Managers
+    public FactionsManager factionsManager;
+    public PlayersManager playersManager;
 
     // Commands
     FactionsCommand factionsCommand;
@@ -83,9 +89,12 @@ public final class F4factions extends JavaPlugin {
 
                         if(!playersTable.next()) {
                             // Create table if don't exists
-                            statement.executeUpdate("CREATE TABLE players (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, nickname VARCHAR(25) NOT NULL UNIQUE, faction INT DEFAULT NULL, rank VARCHAR(12) DEFAULT NULL)");
+                            statement.executeUpdate("CREATE TABLE players (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, nickname VARCHAR(25) NOT NULL UNIQUE, faction INT DEFAULT 0, role INT DEFAULT -1)");
                             getLogger().info("Created table 'players'");
                         }
+
+                        factionsManager = new FactionsManager(plugin);
+                        playersManager = new PlayersManager(plugin);
                     } else {
                         getLogger().info("Bad connection to database.");
                         getLogger().info("Disabling plugin.");
